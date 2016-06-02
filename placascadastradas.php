@@ -51,35 +51,132 @@
 				</ul>
 			</div>
 			<div id="conteudo">
-				<b><u><p align="center">CADASTRO DE PLACAS</p></u></b><br><br>
+				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
 				<!--<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">-->
-					<table cellSpacing="0" cellPadding="0" border="1" align="center">
-						<tr>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Placa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modelo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eixos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-						</tr>
-						<tr align="center">
-							<td><b><a href='#' id='placa_teste1'>TTT9999</a></b></td>
-							<td>TXND 4.0</td>
-							<td>Volkswagen</td>
-							<td>Branco</td>
-							<td>5</td>
-						</tr>
-						<tr align="center">
-							<td><b><a href='#' id='placa_teste2'>YYY8888</a></b></td>
-							<td>VLV 5.2</td>
-							<td>Volvo</td>
-							<td>Vermelho</td>
-							<td>7</td>
-						</tr>
+					<table border="1" align="center">
+						<?php
+							if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
+								include 'loginbd_acessopraca.php';
+								
+								// $datainicial = $_POST['datainicial1'];
+								// $datafinal = $_POST['datafinal1'];
+								
+								# query
+								$query = 
+									"select
+										placa,
+										marca,
+										modelo,
+										cor,
+										estado,
+										cidade,
+										qtd_eixos,
+										data_cadastro,
+										data_vigencia,
+										ativo
+									from
+										Placas";
+								
+								# perform the query
+								$result = odbc_exec($conn, $query);
+								
+								echo "
+									<!--Início Cabeçalho/Exemplos-->
+										<tr>
+											<th>Placa</th>
+											<th>Modelo</th>
+											<th>Marca</th>
+											<th>Cor</th>
+											<th>Cidade</th>
+											<th>Estado</th>
+											<th>Eixos</th>
+											<th>Data Cadastro</th>
+											<th>Vigência até</th>
+											<th>Ativo</th>
+										</tr>
+										<tr align='center' style='background:#FA8072;color:white;'>
+											<td><b><a href='#' id='placa_teste1'>TTT9999</a></b></td>
+											<td>TXND 4.0</td>
+											<td>".strtoupper('Volkswagen')."</td>
+											<td>BRANCO</td>
+											<td>SP</td>
+											<td>BAURU</td>
+											<td>5</td>
+											<td>2016-06-02 15:11:35</td>
+											<td>2017-06-02 15:11:35</td>
+											<td>NÃO</td>
+										</tr>
+										<tr align='center' style='background:#FA8072;color:white;'>
+											<td><b><a href='#' id='placa_teste2'>YYY8888</a></b></td>
+											<td>VLV 5.2</td>
+											<td>VOLVO</td>
+											<td>VERMELHO</td>
+											<td>PR</td>
+											<td>CURITIBA</td>
+											<td>7</td>
+											<td>2016-06-02 15:12:10</td>
+											<td>2017-06-02 15:12:10</td>
+											<td>NÃO</td>
+										</tr>
+									<!--Fim Cabeçalho/Exemplos-->";
+								
+								while(odbc_fetch_row($result)){
+									$placa = utf8_encode(odbc_result($result, 1));
+									$marca = utf8_encode(odbc_result($result, 2));
+									$modelo = utf8_encode(odbc_result($result, 3));
+									$cor = utf8_encode(odbc_result($result, 4));
+									$estado = utf8_encode(odbc_result($result, 5));
+									$cidade = utf8_encode(odbc_result($result, 6));
+									$qtd_eixos = utf8_encode(odbc_result($result, 7));
+									$data_cadastro = utf8_encode(odbc_result($result, 8));
+									$data_vigencia = utf8_encode(odbc_result($result, 9));
+									$ativo = utf8_encode(odbc_result($result, 10));
+									
+									//testa campo null e substitui por vazio
+									// if (is_null($requisitante)){
+										// $requisitante = '  ';
+									// }
+									
+									if($ativo == '1'){
+										$ativo = 'SIM';
+										echo
+											"<tr align='center' style='background:#68ff88;'>
+												<td><a href='#'>$placa</a></td><td>$modelo</td><td>$marca</td><td>$cor</td><td>$estado</td>
+												<td>$cidade</td><td>$qtd_eixos</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+											</tr>";
+									}else{
+										$ativo = 'NÃO';
+										"<tr align='center' style='background:#FA8072;color:white;'>
+												<td><a href='#'>$placa</a></td><td>$modelo</td><td>$marca</td><td>$cor</td><td>$estado</td>
+												<td>$cidade</td><td>$qtd_eixos</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+											</tr>";
+									}
+								}
+								
+								# close the connection
+								odbc_close($conn);
+							}else{
+								echo 
+									"
+									<script>
+										alert('Você não está cadastrado ou não faz parte do grupo de permissão de acesso. 6 Segundos para redirecionar...');
+										setTimeout(redirect, 6000);
+										function redirect() {
+											window.location='index.php';
+										}
+									</script>
+									Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
+							}
+							
+						?>
+						
 					</table>
 				<!--</form>-->
 			</div>
 			<div id="rodape">
-				<!--<img src="imagens/RodapeCART.png">-->
+			</div>
+			<div id="direitos">
+				Desenvolvido por Kindi Wei - CART
 			</div>
 		</div>
 	</body>

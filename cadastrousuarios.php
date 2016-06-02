@@ -36,28 +36,53 @@
 				return true;
 			}
 
-			function TestaCampos(){
+			function TestaCampos(){				
+				document.getElementById("NomeCad").style.backgroundColor = "";
+				document.getElementById("CPFCad").style.backgroundColor = "";
+				document.getElementById("EmailCad").style.backgroundColor = "";
+				document.getElementById("LoginCad").style.backgroundColor = "";
+				document.getElementById("SenhaCad").style.backgroundColor = "";
+				document.getElementById("FuncaoCad").style.backgroundColor = "";
+				
 				if (document.contato.NomeCad.value == ""){
 					alert("Favor preencher o campo Nome");
+					document.getElementById("NomeCad").style.backgroundColor = "ffb8b5";
 					document.contato.NomeCad.focus();
 					return false;
 				}
 
 				if (document.contato.CPFCad.value == ""){
 					alert("Favor preencher o campo CPF");
+					document.getElementById("CPFCad").style.backgroundColor = "ffb8b5";
 					document.contato.CPFCad.focus();
-					return false;
-				}
-
-				if (document.contato.SenhaCad.value == ""){
-					alert("Favor preencher o campo Senha");
-					document.contato.SenhaCad.focus();
 					return false;
 				}
 				
 				if (!isEmail(document.contato.EmailCad.value)){
 					alert("Favor verificar o campo e-mail");
+					document.getElementById("EmailCad").style.backgroundColor = "ffb8b5";
 					document.contato.EmailCad.focus();
+					return false;
+				}
+				
+				if (document.contato.LoginCad.value == ""){
+					alert("Favor preencher o campo Senha");
+					document.getElementById("LoginCad").style.backgroundColor = "ffb8b5";
+					document.contato.LoginCad.focus();
+					return false;
+				}
+
+				if (document.contato.SenhaCad.value == ""){
+					alert("Favor preencher o campo Senha");
+					document.getElementById("SenhaCad").style.backgroundColor = "ffb8b5";
+					document.contato.SenhaCad.focus();
+					return false;
+				}
+
+				if (document.contato.FuncaoCad.value == ""){
+					alert("Favor preencher o campo Senha");
+					document.getElementById("FuncaoCad").style.backgroundColor = "ffb8b5";
+					document.contato.FuncaoCad.focus();
 					return false;
 				}
 
@@ -78,7 +103,6 @@
 							<tr>
 								<td colspan="2" align="center">
 									<?php
-										session_start();
 										if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['senha']) == true) or (strlen($_SESSION['login'])==0) ){
 											echo
 												"<div id='cadastro_esqueci'>
@@ -106,40 +130,55 @@
 				</ul>
 			</div>
 			<div id="conteudo">
-				<b><u><p align="center">Cadastro de usuários</p></u></b><br><br>
+				<!--<b><u><p align="center">Cadastro de usuários</p></u></b><br><br>-->
+				<h1 align="center"><u>Cadastro de usuários</u></h1><br>
 				<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">
 					<table cellSpacing="0" cellPadding="0" border="0" align="center">
 						<tr>
-							<td>Nome (*):</td>
-							<td><input maxLength="255" size="64" name="NomeCad"> </td>
+							<td><u><b>Nome (*):</b></u></td>
+							<td><input maxLength="255" size="64" name="NomeCad" id="NomeCad"> </td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td>CPF (*):</td>
-							<td><input maxLength="255" size="64" name="CPFCad"> </td>
+							<td><u><b>CPF (*):</b></u></td>
+							<td><input maxLength="255" size="64" name="CPFCad" id="CPFCad"> </td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td >E-mail:</td>
-							<td><input maxLength="255" size="64" name="EmailCad"></td>
+							<td><u><b>E-mail (*):</b></u></td>
+							<td><input maxLength="255" size="64" name="EmailCad" id="EmailCad"></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
 							<td>Telefone:</td>
-							<td><input maxLength="255" size="22" name="TelefoneCad"></td>
+							<td><input maxLength="255" size="22" name="TelefoneCad" id="TelefoneCad"></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td><u><b>Login: (*)</b></u></td>
+							<td><input maxLength="255" size="30" name="LoginCad" id="LoginCad"></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
 							<td><u><b>Senha (*):</u></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-							<td><input maxLength="255" type="password" size="22" name="SenhaCad"></td>
+							<td><input maxLength="255" type="password" size="22" name="SenhaCad" id="SenhaCad"></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td><u><b>Função/Cargo (*):</u></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td><input maxLength="255" size="40" name="FuncaoCad" id="FuncaoCad"></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -161,6 +200,9 @@
 				</form>
 			</div>
 			<div id="rodape">
+			</div>
+			<div id="direitos">
+				Desenvolvido por Kindi Wei - CART
 			</div>
 		</div>
 	</body>

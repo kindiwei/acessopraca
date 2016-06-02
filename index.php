@@ -10,6 +10,69 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="content-language" content="pt-br">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
+		<script>
+			function isEmail(text){
+				var arroba = "@",
+						ponto = ".",
+						posponto = 0,
+						posarroba = 0;
+				if (text =="") return false;
+				for (var indice = 0; indice < text.length; indice++){
+					if (text.charAt(indice) == arroba) {
+						posarroba = indice;
+						break;
+					}
+				}
+				for (var indice = posarroba; indice < text.length; indice++){
+					if (text.charAt(indice) == ponto) {
+						posponto = indice;
+						break;
+					}
+				}
+				if (posponto == 0 || posarroba == 0) return false;
+				if (posponto == (posarroba + 1)) return false;
+				if ((posponto + 1) == text.length) return false;
+				return true;
+			}
+
+			function TestaCampos(){
+				document.getElementById("placa").style.backgroundColor = "";
+				document.getElementById("uf").style.backgroundColor = "";
+				document.getElementById("cidade").style.backgroundColor = "";
+				
+				if (document.cadastroplaca.placa.value == ""){
+					alert("Favor preencher o campo Nome");
+					document.getElementById("placa").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.placa.focus();
+					return false;
+				}
+
+				if (document.cadastroplaca.uf.value == ""){
+					alert("Favor preencher o campo CPF");
+					document.getElementById("uf").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.uf.focus();
+					return false;
+				}
+				
+				if (!isEmail(document.cadastroplaca.cidade.value)){
+					alert("Favor verificar o campo e-mail");
+					document.getElementById("cidade").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.cidade.focus();
+					return false;
+				}
+				
+				if (document.cadastroplaca.uf.value == "Selecione"){
+					alert("Favor preencher o campo Senha");
+					document.getElementById("uf").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.uf.focus();
+					return false;
+				}
+
+				return true;
+			}
+		</script>
+		
 	</head>
 	<body>
 		<div id="site">
@@ -50,34 +113,23 @@
 				</ul>
 			</div>
 			<div id="conteudo">
-				<b><u><p align="center">CADASTRO DE PLACAS</p></u></b><br><br>
-				<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">
+				<h1 align="center"><u>Cadastro de Placas</u></h1><br>
+				<form name="cadastroplaca" onsubmit="return TestaCampos();" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 					<table cellSpacing="0" cellPadding="0" border="0" align="center">
 						<tr>
 							<td><b><u>PLACA (*)</u></b>:</td>
-							<td><input maxLength="255" size="40" name="placa"> </td>
+							<td><input maxLength="255" size="40" name="placa" id="placa"> </td>
 						</tr>
+						
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
+						
 						<tr>
-							<td >MARCA:</td>
-							<td><input maxLength="255" size="40" name="marca"></td>
+							<td><b><u>CIDADE (*)</u></b>:</td>
+							<td><input maxLength="255" size="22" name="cidade" id="cidade"></td>
 						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>MODELO:</td>
-							<td><input maxLength="255" size="40" name="modelo"></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>COR:</td>
-							<td><input maxLength="255" size="40" name="cor"></td>
-						</tr>
+												
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
@@ -117,21 +169,30 @@
 								</select>
 							</td>
 						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td><b><u>CIDADE (*)</u></b>:</td>
-							<td><input maxLength="255" size="22" name="cidade"></td>
-						</tr>
-						<tr>
+						
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						
+						<tr>
+							<td><b><u>CATEGORIA (*)</u></b>:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+								<select name="categoria" id="categoria">
+									<option value="">Selecione</option>
+									<option value="AC">Comercial</option>
+									<option value="AL">Passeio</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						
+						<tr>
 							<td>QTDE EIXOS:&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
-								<select name="uf" id="uf">
+								<select name="eixos" id="eixos">
 									<option value="">Selecione</option>
 									<option value="um">01</option>
 									<option value="dois">02</option>
@@ -156,15 +217,42 @@
 								</select>
 							</td>
 						</tr>
+						
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
+						
+						<tr>
+							<td >MARCA:</td>
+							<td><input maxLength="255" size="40" name="marca" id="marca"></td>
+						</tr>
+						
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
+						
+						<tr>
+							<td>MODELO:</td>
+							<td><input maxLength="255" size="40" name="modelo" id="modelo"></td>
+						</tr>
+						
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						
+						<tr>
+							<td>COR:</td>
+							<td><input maxLength="255" size="40" name="cor" id="cor"></td>
+						</tr>
+						
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						
 						<tr>
 							<td colspan="2" align="center">(*) Campos obrigatórios!</td>
 						</tr>
+						
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
@@ -172,15 +260,77 @@
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
+						
 						<tr>
 							<td colspan="2" align="center"><input type="submit" value="Enviar" name="Submit">
 							&nbsp; &nbsp;<input type="reset" value="Limpar" name="Submit2"></td>
 						</tr>
+						
 					</table>
+					
+					<?php
+						//permission inside if test
+						if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
+							if($_SERVER["REQUEST_METHOD"] == "POST"){
+								include 'loginbd_acessopraca.php';
+								
+								$connection_string = "DRIVER={SQL Server};SERVER=$server;DATABASE=$database";
+								$conn = odbc_connect($connection_string,$user,$pass) or die('<script>alert("Erro de conexão com o banco!!");</script>');
+								
+								$placa = $_POST['placa'];
+								$marca = $_POST['marca'];
+								$modelo = $_POST['modelo'];
+								$cor = $_POST['cor'];
+								$uf = $_POST['uf'];
+								$cidade = $_POST['cidade'];
+								$eixos = $_POST['eixos'];
+								
+								# query
+								$query =
+									"insert into
+										Placas values (
+											(select max(idplaca)+1 from Placas),
+											'".strtoupper($placa)."',
+											'$marca',
+											'$modelo',
+											'$cor',
+											'$estado',
+											'$cidade',
+											'$eixos',
+											'GETDATE()',
+											'DATEADD(YEAR,1,GETDATE())',
+											1
+										)";
+								
+								//echo $query;
+								
+								# perform the query
+								$result = odbc_exec($conn, $query);
+								
+								# close the connection
+								odbc_close($conn);
+							}
+						}else{
+								echo 
+									"
+									<script>
+										alert('Você não está cadastrado ou não faz parte do grupo de permissão de acesso. 6 Segundos para redirecionar...');
+										setTimeout(redirect, 6000);
+										function redirect() {
+											window.location='index.php';
+										}
+									</script>
+									Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
+							}
+				?>
+					
+					
 				</form>
 			</div>
 			<div id="rodape">
-				<!--<img src="imagens/RodapeCART.png">-->
+			</div>
+			<div id="direitos">
+				Desenvolvido por Kindi Wei - CART
 			</div>
 		</div>
 	</body>

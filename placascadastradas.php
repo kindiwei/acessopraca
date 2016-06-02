@@ -1,5 +1,9 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
+<?php
+	session_start();
+?>
+
 <html>
 	<head>
 		<title>Cadastro de veículos autorizados - Bloqueio viário da Prefeitura de Palmital</title>
@@ -13,7 +17,7 @@
 				<div id="login">
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="Login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>

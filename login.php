@@ -3,23 +3,20 @@
 		$login = $_POST['login'];
 		$senha = $_POST['senha'];
 		
-		include 'loginbd_sinterno.php';
-		
-		$connection_string = "DRIVER={SQL Server};SERVER=$server;DATABASE=$database";
-		$conn = odbc_connect($connection_string,$user,$pass) or die('<script>alert("Erro de conexão com o banco!!");</script>');
+		include 'loginbd_acessopraca.php';
 		
 		# query
 		// $query = "select * from usuarios u where u.login='$login' and u.passw='".md5($senha)."'";
 		$query = "
 				select
-					u.login,
+					u.usuario,
 					u.passw,
-					f.descricao
+					f.funcao
 				from
 					Usuarios u
 					left join Funcao f on f.idfuncao = u.idfuncao
 				where
-					u.login='$login'
+					u.usuario='$login'
 					and u.passw='".md5($senha)."'
 		";
 		
@@ -31,8 +28,10 @@
 			$_SESSION["funcao"]=utf8_encode(odbc_result($res, 3));
 			
 			echo "<br><br><p>Bem vindo, ".$_SESSION["login"]."!</p><br>Aguarde alguns segundos para ser transferido.";
+			echo "<br><br><p>".$_SESSION["senha"]."!</p><br>";
 			echo 
-				"<script>
+				"
+				<script>
 					window.location='index.php'; 
 				</script>
 

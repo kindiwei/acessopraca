@@ -1,5 +1,9 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
+<?php
+	session_start();
+?>
+
 <html>
 	<head>
 		<title>Cadastro de veículos autorizados - Bloqueio viário da Prefeitura de Palmital</title>
@@ -10,34 +14,28 @@
 	<body>
 		<div id="site">
 			<div id="cabecalho">
-				<!--<img src="imagens/CabecalhoCART.png">-->
 				<div id="login">
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="Login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>
 								<td colspan="2" align="center">
 									<?php
-										// session_start();
-										// if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['senha']) == true) or (strlen($_SESSION['login'])==0) ){
+										if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['senha']) == true) or (strlen($_SESSION['login'])==0) ){
 											echo
 												"<div id='cadastro_esqueci'>
 													<a href='cadastrousuarios.php'>Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
 													<a href='#'>Esqueci minha senha</a>
 												</div>";
-										// }else{
-											// echo
-												// "<div id='cadastro_esqueci'>
-													// Olá, ".$_SESSION["login"].
-												// "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logoff.php'>LOGOUT</a></div>";
-										// }
+										}else{
+											echo
+												"<div id='cadastro_esqueci'>
+													Olá, ".$_SESSION["login"].
+												"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logoff.php'>LOGOUT</a></div>";
+										}
 									?>
-									<!--<div id="cadastro_esqueci">
-										<a href="cadastrousuarios.php">Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
-										<a href="#">Esqueci minha senha</a>
-									</div>-->
 								</td>
 							</tr>
 						</table>

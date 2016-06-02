@@ -2,42 +2,92 @@
 
 <html>
 	<head>
-		<title>Sistema interno - CART</title>
+		<title>Cadastro de veículos autorizados - Bloqueio viário da Prefeitura de Palmital</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="content-language" content="pt-br">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
+		<script>
+			function isEmail(text){
+				var arroba = "@",
+						ponto = ".",
+						posponto = 0,
+						posarroba = 0;
+				if (text =="") return false;
+				for (var indice = 0; indice < text.length; indice++){
+					if (text.charAt(indice) == arroba) {
+						posarroba = indice;
+						break;
+					}
+				}
+				for (var indice = posarroba; indice < text.length; indice++){
+					if (text.charAt(indice) == ponto) {
+						posponto = indice;
+						break;
+					}
+				}
+				if (posponto == 0 || posarroba == 0) return false;
+				if (posponto == (posarroba + 1)) return false;
+				if ((posponto + 1) == text.length) return false;
+				return true;
+			}
+
+			function TestaCampos(){
+				if (document.contato.NomeCad.value == ""){
+					alert("Favor preencher o campo Nome");
+					document.contato.NomeCad.focus();
+					return false;
+				}
+
+				if (document.contato.CPFCad.value == ""){
+					alert("Favor preencher o campo CPF");
+					document.contato.CPFCad.focus();
+					return false;
+				}
+
+				if (document.contato.SenhaCad.value == ""){
+					alert("Favor preencher o campo Senha");
+					document.contato.SenhaCad.focus();
+					return false;
+				}
+				
+				if (!isEmail(document.contato.EmailCad.value)){
+					alert("Favor verificar o campo e-mail");
+					document.contato.EmailCad.focus();
+					return false;
+				}
+
+				return true;
+			}
+		</script>
+		
 	</head>
 	<body>
 		<div id="site">
 			<div id="cabecalho">
-				<!--<img src="imagens/CabecalhoCART.png">-->
 				<div id="login">
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" name="Login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>
 								<td colspan="2" align="center">
 									<?php
-										// session_start();
-										// if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['senha']) == true) or (strlen($_SESSION['login'])==0) ){
+										session_start();
+										if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['senha']) == true) or (strlen($_SESSION['login'])==0) ){
 											echo
 												"<div id='cadastro_esqueci'>
 													<a href='cadastrousuarios.php'>Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
 													<a href='#'>Esqueci minha senha</a>
 												</div>";
-										// }else{
-											// echo
-												// "<div id='cadastro_esqueci'>
-													// Olá, ".$_SESSION["login"].
-												// "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logoff.php'>LOGOUT</a></div>";
-										// }
+										}else{
+											echo
+												"<div id='cadastro_esqueci'>
+													Olá, ".$_SESSION["login"].
+												"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logoff.php'>LOGOUT</a></div>";
+										}
 									?>
-									<!--<div id="cadastro_esqueci">
-										<a href="cadastrousuarios.php">Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
-										<a href="#">Esqueci minha senha</a>
-									</div>-->
 								</td>
 							</tr>
 						</table>
@@ -47,7 +97,7 @@
 			<div id="menu">
 				<ul>
 					<li><a href="index.php">Cadastro de Placas</a></li>
-					<li><a href="#">Placas Cadastradas</a></li>
+					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
@@ -58,6 +108,13 @@
 						<tr>
 							<td>Nome (*):</td>
 							<td><input maxLength="255" size="64" name="NomeCad"> </td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>CPF (*):</td>
+							<td><input maxLength="255" size="64" name="CPFCad"> </td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -77,30 +134,6 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td><u><b>Funcao (*):</b></u></td>
-							<td>
-								<select name="FuncaoCad">
-									<option value="admin">Administrador</option>
-									<option value="user">User</option>
-									<option value="cca">CCA</option>
-									<option value="pco">PCO</option>
-									<option value="cca">CCO</option>
-									<option value="ti">TI</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						
-						<tr>
-							<td><u><b>Login (*):</b></u></td>
-							<td><input maxLength="255" size="22" name="LoginCad"></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
 							<td><u><b>Senha (*):</u></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td><input maxLength="255" type="password" size="22" name="SenhaCad"></td>
 						</tr>
@@ -111,7 +144,7 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td colspan="2" align="center">(*) Campos são obrigatórios</td>
+							<td colspan="2" align="center">(*) Campos obrigatórios</td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -124,7 +157,6 @@
 				</form>
 			</div>
 			<div id="rodape">
-				<!--<img src="imagens/RodapeCART.png">-->
 			</div>
 		</div>
 	</body>

@@ -14,7 +14,7 @@
 				<div id="login">
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" name="Login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>
@@ -47,7 +47,7 @@
 			<div id="menu">
 				<ul>
 					<li><a href="index.php">Cadastro de Placas</a></li>
-					<li><a href="#">Placas Cadastradas</a></li>
+					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
@@ -55,9 +55,6 @@
 				<b><u><p align="center">CADASTRO DE PLACAS</p></u></b><br><br>
 				<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">
 					<table cellSpacing="0" cellPadding="0" border="0" align="center">
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
 						<tr>
 							<td><b><u>PLACA (*)</u></b>:</td>
 							<td><input maxLength="255" size="40" name="placa"> </td>

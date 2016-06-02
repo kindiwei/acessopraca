@@ -84,36 +84,39 @@
 									<!--Início Cabeçalho/Exemplos-->
 										<tr>
 											<th>Placa</th>
-											<th>Modelo</th>
-											<th>Marca</th>
-											<th>Cor</th>
-											<th>Cidade</th>
 											<th>Estado</th>
+											<th>Cidade</th>
+											<th>Categoria</th>
 											<th>Eixos</th>
+											<th>Marca</th>
+											<th>Modelo</th>
+											<th>Cor</th>
 											<th>Data Cadastro</th>
 											<th>Vigência até</th>
 											<th>Ativo</th>
 										</tr>
 										<tr align='center' style='background:#FA8072;color:white;'>
 											<td><b><a href='#' id='placa_teste1'>TTT9999</a></b></td>
-											<td>TXND 4.0</td>
-											<td>".strtoupper('Volkswagen')."</td>
-											<td>BRANCO</td>
 											<td>SP</td>
 											<td>BAURU</td>
+											<td>Comercial</td>
 											<td>5</td>
+											<td>".strtoupper('Volkswagen')."</td>
+											<td>TXND 4.0</td>
+											<td>BRANCO</td>
 											<td>2016-06-02 15:11:35</td>
 											<td>2017-06-02 15:11:35</td>
 											<td>NÃO</td>
 										</tr>
 										<tr align='center' style='background:#FA8072;color:white;'>
 											<td><b><a href='#' id='placa_teste2'>YYY8888</a></b></td>
-											<td>VLV 5.2</td>
-											<td>VOLVO</td>
-											<td>VERMELHO</td>
 											<td>PR</td>
 											<td>CURITIBA</td>
+											<td>Comercial</td>
 											<td>7</td>
+											<td>VOLVO</td>
+											<td>VLV 5.2</td>
+											<td>VERMELHO</td>
 											<td>2016-06-02 15:12:10</td>
 											<td>2017-06-02 15:12:10</td>
 											<td>NÃO</td>
@@ -131,6 +134,7 @@
 									$data_cadastro = utf8_encode(odbc_result($result, 8));
 									$data_vigencia = utf8_encode(odbc_result($result, 9));
 									$ativo = utf8_encode(odbc_result($result, 10));
+									$categoria = utf8_encode(odbc_result($result, 11));
 									
 									//testa campo null e substitui por vazio
 									// if (is_null($requisitante)){
@@ -141,14 +145,14 @@
 										$ativo = 'SIM';
 										echo
 											"<tr align='center' style='background:#68ff88;'>
-												<td><a href='#'>$placa</a></td><td>$modelo</td><td>$marca</td><td>$cor</td><td>$estado</td>
-												<td>$cidade</td><td>$qtd_eixos</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+												<td><a href='#'>$placa</a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
 											</tr>";
 									}else{
 										$ativo = 'NÃO';
 										"<tr align='center' style='background:#FA8072;color:white;'>
-												<td><a href='#'>$placa</a></td><td>$modelo</td><td>$marca</td><td>$cor</td><td>$estado</td>
-												<td>$cidade</td><td>$qtd_eixos</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+												<td><a href='#'>$placa</a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
 											</tr>";
 									}
 								}
@@ -176,7 +180,7 @@
 			<div id="rodape">
 			</div>
 			<div id="direitos">
-				Desenvolvido por Kindi Wei - CART
+				Desenvolvido por Kindi Wei
 			</div>
 		</div>
 	</body>

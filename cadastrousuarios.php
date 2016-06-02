@@ -202,7 +202,7 @@
 			<div id="rodape">
 			</div>
 			<div id="direitos">
-				Desenvolvido por Kindi Wei - CART
+				Desenvolvido por Kindi Wei
 			</div>
 		</div>
 	</body>

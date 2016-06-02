@@ -126,15 +126,6 @@
 						</tr>
 						
 						<tr>
-							<td><b><u>CIDADE (*)</u></b>:</td>
-							<td><input maxLength="255" size="22" name="cidade" id="cidade"></td>
-						</tr>
-												
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						
-						<tr>
 							<td><b><u>ESTADO (*)</u></b>:</td>
 							<td>
 								<select name="uf" id="uf">
@@ -168,6 +159,15 @@
 									<option value="TO">TO</option>
 								</select>
 							</td>
+						</tr>
+						
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						
+						<tr>
+							<td><b><u>CIDADE (*)</u></b>:</td>
+							<td><input maxLength="255" size="22" name="cidade" id="cidade"></td>
 						</tr>
 						
 						<tr>
@@ -330,7 +330,7 @@
 			<div id="rodape">
 			</div>
 			<div id="direitos">
-				Desenvolvido por Kindi Wei - CART
+				Desenvolvido por Kindi Wei
 			</div>
 		</div>
 	</body>

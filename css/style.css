@@ -1,0 +1,145 @@
+﻿body{
+	margin:0;
+	padding:0;
+	background:#ebebeb;
+	text-align:center;
+}
+
+@font-face {
+   font-family:Fonte-tudo;
+   src: url("http://sistemainterno.cart.invepar.com.br:8080/css/AntennaCondLight.otf");
+   /*src: url(../arquivos/AntennaCondLight.eot);*/
+   /*src: local('AntennaCondLight'), local('AntennaCondLight'), url(http://sgapinterno.cart.invepar.com.br:8080/css/AntennaCondLight.otf) format('otf');*/
+}
+
+#cabecalho{
+	position:relative;
+	background-image: url("http://sistemainterno.cart.invepar.com.br:8080/imagens/CabecalhoCART.png");
+	margin:0;
+	padding: 0;
+	height: 198px;
+}
+
+#rodape{
+	position:relative;
+	background-image: url("http://sistemainterno.cart.invepar.com.br:8080/imagens/RodapeCART.png");
+	margin:0;
+	padding: 0;
+	height: 199px;
+}
+
+#login{
+	position:absolute;
+	left:77%;
+	top:10px;
+	border: 2px solid #757575;
+	background:white;
+	-webkit-box-shadow:0px 0px 4px rgba(0, 0, 0, 0.65);
+	-moz-box-shadow:0px 0px 4px rgba(0, 0, 0, 0.65);
+	box-shadow:0px 0px 4px rgba(0, 0, 0, 0.65);
+}
+
+#login a{
+	color:black;
+}
+
+#cadastro_esqueci{
+	font-size:12px;
+}
+
+#menu{
+	background-color:white;
+	text-align:center;
+	margin-top:20px;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+
+#menu ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+#menu ul li{
+	display:inline;
+}
+
+#menu ul li a{
+	font-size: 20px;
+	font-weight:bold;
+	text-decoration:none;
+	background:#d4d4d4;
+	padding:10px 20px 10px 20px;
+	color:#8d0005;
+}
+
+#menu ul li a:hover{
+	background:#868686;
+	-webkit-box-shadow:0px 0px 3px rgba(0, 0, 0, 0.45);
+	-moz-box-shadow:0px 0px 3px rgba(0, 0, 0, 0.45);
+	box-shadow:0px 0px 3px rgba(0, 0, 0, 0.45);
+}
+
+#loading_spinner { display:none; }
+
+#site {
+	background-color:white;
+	font-family:Fonte-tudo;
+	width: 1160px;
+	margin:0 auto;
+	text-align:left;
+	-webkit-box-shadow:0px 0px 10px rgba(0, 0, 0, 0.45);
+	-moz-box-shadow:0px 0px 10px rgba(0, 0, 0, 0.45);
+	box-shadow:0px 0px 10px rgba(0, 0, 0, 0.45);
+}
+
+#conteudo,#conteudoCadastroOSA {
+	font-family:Fonte-tudo;
+	padding:35px;
+	background-color: #fff;
+}
+
+#conteudoCadastroOSA{
+	position:relative;
+	height:1300px;
+}
+
+#conteudoTripper{
+	margin:20px;
+	text-align:center;
+	/*position:relative;*/
+	/*height:1300px;*/
+}
+
+#tabelaTripper{
+	/*left:50%;
+	margin-left:-170px;
+	position:absolute;*/
+}
+
+#conteudo2{
+	position:relative;
+	height:600px;
+}
+
+#tabelaosa{
+	left:50%;
+	margin-left:-170px;
+	position:absolute;
+}
+
+#relat{
+	left:50%;
+	margin-left:-220px;
+	position:absolute;
+}
+
+#relat1{
+	width: 840px;
+	overflow: auto;
+}
+
+#data{
+	text-align:center;
+}

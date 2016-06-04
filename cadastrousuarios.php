@@ -36,7 +36,7 @@
 				return true;
 			}
 
-			function TestaCampos(){				
+			function TestaCampos(){
 				document.getElementById("NomeCad").style.backgroundColor = "";
 				document.getElementById("CPFCad").style.backgroundColor = "";
 				document.getElementById("EmailCad").style.backgroundColor = "";

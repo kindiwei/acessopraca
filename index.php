@@ -12,27 +12,59 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		
 		<script>
-			function isEmail(text){
-				var arroba = "@",
-						ponto = ".",
-						posponto = 0,
-						posarroba = 0;
-				if (text =="") return false;
-				for (var indice = 0; indice < text.length; indice++){
-					if (text.charAt(indice) == arroba) {
-						posarroba = indice;
-						break;
+			function isValidatePlate(text){
+				alert('validação placa');
+				text = text.trim();
+				text = text.replace(" ", "");
+				text = text.replace(' ', '');
+				text = text.replace(',', '');
+				text = text.replace('.', '');
+				text = text.replace('-', '');
+				text = text.replace('+', '');
+				text = text.replace('/', '');
+				text = text.replace('*', '');
+				text = text.replace('+', '');
+				text = text.replace('_', '');
+				text = text.replace('-', '');
+				text = text.replace(')', '');
+				text = text.replace('(', '');
+				text = text.replace('*', '');
+				text = text.replace('&', '');
+				text = text.replace('%', '');
+				text = text.replace('$', '');
+				text = text.replace('#', '');
+				text = text.replace('@', '');
+				text = text.replace('!', '');
+				
+				text = text.toUpperCase();
+				
+				//funcao testa alfabeto
+				function isAlphaOrParen(str){
+					// alert('entrou teste alfabeto');
+					return /^[a-zA-Z()]+$/.test(str);
+				}
+				
+				// alert('saiu teste alfabeto');
+				
+				//testa se caracter 3 primeiros caracteres da string são letras - retorna falso se encontrar numero nos 3 primeiros caracteres
+				for (var i = 0; i < 3; i++){
+					// alert('letra: '+text.charAt(i));
+					if (!isAlphaOrParen(text.charAt(i))){
+						//alert('valida alfabeto da placa. PRIMEIROS 3 CARACTERES NÃO OK: '+text.charAt(i));
+						return false;
+					}
+					// else{}
+				}
+				
+				//testa se algum do 4o ao último caracter é letra
+				for (var i = 3; i < text.length ; i++){
+					if (isAlphaOrParen(text.charAt(i))){
+						// alert('valida alfabeto da placa. 4 ÚLTIMOS CARACTERES NÃO OK: '+text.charAt(i));
+						return false;
 					}
 				}
-				for (var indice = posarroba; indice < text.length; indice++){
-					if (text.charAt(indice) == ponto) {
-						posponto = indice;
-						break;
-					}
-				}
-				if (posponto == 0 || posarroba == 0) return false;
-				if (posponto == (posarroba + 1)) return false;
-				if ((posponto + 1) == text.length) return false;
+				
+				// alert('valida alfabeto da placa. TUDO OK!');
 				return true;
 			}
 
@@ -40,35 +72,76 @@
 				document.getElementById("placa").style.backgroundColor = "";
 				document.getElementById("uf").style.backgroundColor = "";
 				document.getElementById("cidade").style.backgroundColor = "";
+				document.getElementById("categoria").style.backgroundColor = "";
+				
+				// alert("tamanho da string: "+document.cadastroplaca.placa.value.length);
 				
 				if (document.cadastroplaca.placa.value == ""){
-					alert("Favor preencher o campo Nome");
+					alert("Favor preencher o campo Placa");
 					document.getElementById("placa").style.backgroundColor = "ffb8b5";
 					document.cadastroplaca.placa.focus();
 					return false;
+				}else{
+					if (document.cadastroplaca.placa.value.length > 7){
+						alert("Favor preencher corretamente o campo Placa");
+						document.getElementById("placa").style.backgroundColor = "ffb8b5";
+						document.cadastroplaca.placa.focus();
+						return false;
+					}else{
+						if (document.getElementById("placa").value.length < 7){
+							alert("Favor preencher corretamente o campo Placa");
+							document.getElementById("placa").style.backgroundColor = "ffb8b5";
+							document.cadastroplaca.placa.focus();
+							return false;
+						}else{
+							if (!isValidatePlate(document.cadastroplaca.placa.value)){
+								alert("Existe algo no preenchimento da placa!\n"+
+											"- Verifique o tamanho do que foi digitado;\n"+
+											"- Se foi digitado as letras corretas;\n"+
+											"- Se foi digitado os números corretamente.");
+								document.getElementById("placa").style.backgroundColor = "ffb8b5";
+								document.cadastroplaca.placa.focus();
+								return false;
+							}
+						}
+					}
 				}
 
 				if (document.cadastroplaca.uf.value == ""){
-					alert("Favor preencher o campo CPF");
+					alert("Favor preencher o campo Estado");
 					document.getElementById("uf").style.backgroundColor = "ffb8b5";
 					document.cadastroplaca.uf.focus();
 					return false;
 				}
 				
-				if (!isEmail(document.cadastroplaca.cidade.value)){
-					alert("Favor verificar o campo e-mail");
+				if (document.cadastroplaca.cidade.value == "Selecione"){
+					alert("Favor preencher o campo Cidade");
 					document.getElementById("cidade").style.backgroundColor = "ffb8b5";
-					document.cadastroplaca.cidade.focus();
+					document.cadastroplaca.categoria.focus();
 					return false;
 				}
 				
-				if (document.cadastroplaca.uf.value == "Selecione"){
-					alert("Favor preencher o campo Senha");
-					document.getElementById("uf").style.backgroundColor = "ffb8b5";
-					document.cadastroplaca.uf.focus();
+				if (document.cadastroplaca.categoria.value == "Selecione"){
+					alert("Favor preencher o campo Categoria");
+					document.getElementById("categoria").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.categoria.focus();
 					return false;
 				}
-
+				
+				if (document.cadastroplaca.categoria.value == "Selecione"){
+					alert("Favor preencher o campo Categoria");
+					document.getElementById("categoria").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.categoria.focus();
+					return false;
+				}
+				
+				if (document.cadastroplaca.eixos.value == "Selecione"){
+					alert("Favor preencher o campo Categoria");
+					document.getElementById("eixos").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.eixos.focus();
+					return false;
+				}
+				
 				return true;
 			}
 		</script>
@@ -190,7 +263,7 @@
 						</tr>
 						
 						<tr>
-							<td>QTDE EIXOS:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td><b><u>QTDE EIXOS (*)</u></b>:&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
 								<select name="eixos" id="eixos">
 									<option value="">Selecione</option>
@@ -270,6 +343,8 @@
 					
 					<?php
 						//permission inside if test
+						
+						
 						if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
 							if($_SERVER["REQUEST_METHOD"] == "POST"){
 								include 'loginbd_acessopraca.php';
@@ -310,21 +385,10 @@
 								# close the connection
 								odbc_close($conn);
 							}
-						}else{
-								echo 
-									"
-									<script>
-										alert('Você não está cadastrado ou não faz parte do grupo de permissão de acesso. 6 Segundos para redirecionar...');
-										setTimeout(redirect, 6000);
-										function redirect() {
-											window.location='index.php';
-										}
-									</script>
-									Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
-							}
-				?>
-					
-					
+						}
+						
+						
+					?>
 				</form>
 			</div>
 			<div id="rodape">

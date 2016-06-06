@@ -6,7 +6,6 @@
 		include 'loginbd_acessopraca.php';
 		
 		# query
-		// $query = "select * from usuarios u where u.login='$login' and u.passw='".md5($senha)."'";
 		$query = "
 				select
 					u.usuario,
@@ -29,6 +28,7 @@
 			
 			echo "<br><br><p>Bem vindo, ".$_SESSION["login"]."!</p><br>Aguarde alguns segundos para ser transferido.";
 			echo "<br><br><p>".$_SESSION["senha"]."!</p><br>";
+			echo "<br><br><p>".$_SESSION["funcao"]."!</p><br>";
 			echo 
 				"
 				<script>

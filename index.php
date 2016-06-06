@@ -13,7 +13,6 @@
 		
 		<script>
 			function isValidatePlate(text){
-				alert('validação placa');
 				text = text.trim();
 				text = text.replace(" ", "");
 				text = text.replace(' ', '');
@@ -40,39 +39,33 @@
 				
 				//funcao testa alfabeto
 				function isAlphaOrParen(str){
-					// alert('entrou teste alfabeto');
 					return /^[a-zA-Z()]+$/.test(str);
 				}
 				
-				// alert('saiu teste alfabeto');
 				
 				//testa se caracter 3 primeiros caracteres da string são letras - retorna falso se encontrar numero nos 3 primeiros caracteres
 				for (var i = 0; i < 3; i++){
-					// alert('letra: '+text.charAt(i));
 					if (!isAlphaOrParen(text.charAt(i))){
-						//alert('valida alfabeto da placa. PRIMEIROS 3 CARACTERES NÃO OK: '+text.charAt(i));
 						return false;
 					}
-					// else{}
 				}
 				
 				//testa se algum do 4o ao último caracter é letra
 				for (var i = 3; i < text.length ; i++){
 					if (isAlphaOrParen(text.charAt(i))){
-						// alert('valida alfabeto da placa. 4 ÚLTIMOS CARACTERES NÃO OK: '+text.charAt(i));
 						return false;
 					}
 				}
 				
-				// alert('valida alfabeto da placa. TUDO OK!');
 				return true;
 			}
 
 			function TestaCampos(){
 				document.getElementById("placa").style.backgroundColor = "";
-				document.getElementById("uf").style.backgroundColor = "";
-				document.getElementById("cidade").style.backgroundColor = "";
+				document.getElementById("cod_estados").style.backgroundColor = "";
+				document.getElementById("cod_cidades").style.backgroundColor = "";
 				document.getElementById("categoria").style.backgroundColor = "";
+				document.getElementById("eixos").style.backgroundColor = "";
 				
 				// alert("tamanho da string: "+document.cadastroplaca.placa.value.length);
 				
@@ -95,7 +88,7 @@
 							return false;
 						}else{
 							if (!isValidatePlate(document.cadastroplaca.placa.value)){
-								alert("Existe algo no preenchimento da placa!\n"+
+								alert("Existe algo no preenchimento da placa!\n\n"+
 											"- Verifique o tamanho do que foi digitado;\n"+
 											"- Se foi digitado as letras corretas;\n"+
 											"- Se foi digitado os números corretamente.");
@@ -106,43 +99,47 @@
 						}
 					}
 				}
-
-				if (document.cadastroplaca.uf.value == ""){
+				
+				if (document.cadastroplaca.cod_estados.value == ""){
 					alert("Favor preencher o campo Estado");
-					document.getElementById("uf").style.backgroundColor = "ffb8b5";
-					document.cadastroplaca.uf.focus();
+					document.getElementById("cod_estados").style.backgroundColor = "ffb8b5";
+					document.cadastroplaca.cod_estados.focus();
 					return false;
 				}
 				
-				if (document.cadastroplaca.cidade.value == "Selecione"){
+				if (document.cadastroplaca.cod_cidades.value == ""){
 					alert("Favor preencher o campo Cidade");
-					document.getElementById("cidade").style.backgroundColor = "ffb8b5";
+					document.getElementById("cod_cidades").style.backgroundColor = "ffb8b5";
 					document.cadastroplaca.categoria.focus();
 					return false;
 				}
 				
-				if (document.cadastroplaca.categoria.value == "Selecione"){
+				if (document.cadastroplaca.categoria.value == ""){
 					alert("Favor preencher o campo Categoria");
 					document.getElementById("categoria").style.backgroundColor = "ffb8b5";
 					document.cadastroplaca.categoria.focus();
 					return false;
 				}
 				
-				if (document.cadastroplaca.categoria.value == "Selecione"){
-					alert("Favor preencher o campo Categoria");
-					document.getElementById("categoria").style.backgroundColor = "ffb8b5";
-					document.cadastroplaca.categoria.focus();
-					return false;
-				}
-				
-				if (document.cadastroplaca.eixos.value == "Selecione"){
-					alert("Favor preencher o campo Categoria");
+				if (document.cadastroplaca.eixos.value == ""){
+					alert("Favor preencher o campo Quantidade de Eixos");
 					document.getElementById("eixos").style.backgroundColor = "ffb8b5";
 					document.cadastroplaca.eixos.focus();
 					return false;
 				}
 				
 				return true;
+			}
+			
+			function carregaCidades(codCidade) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (xhttp.readyState == 4 && xhttp.status == 200) {
+						document.getElementById("cod_cidades").innerHTML = xhttp.responseText;
+					}
+				};
+				xhttp.open("GET", "carregacidades.php?codestados="+codCidade, true);
+				xhttp.send();
 			}
 		</script>
 		
@@ -187,7 +184,7 @@
 			</div>
 			<div id="conteudo">
 				<h1 align="center"><u>Cadastro de Placas</u></h1><br>
-				<form name="cadastroplaca" onsubmit="return TestaCampos();" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+				<form name="cadastroplaca" onsubmit="return TestaCampos();" action="envia_placa_banco.php" method="post">
 					<table cellSpacing="0" cellPadding="0" border="0" align="center">
 						<tr>
 							<td><b><u>PLACA (*)</u></b>:</td>
@@ -201,35 +198,35 @@
 						<tr>
 							<td><b><u>ESTADO (*)</u></b>:</td>
 							<td>
-								<select name="uf" id="uf">
-									<option value="">Selecione</option>
-									<option value="AC">AC</option>
-									<option value="AL">AL</option>
-									<option value="AM">AM</option>
-									<option value="AP">AP</option>
-									<option value="BA">BA</option>
-									<option value="CE">CE</option>
-									<option value="DF">DF</option>
-									<option value="ES">ES</option>
-									<option value="GO">GO</option>
-									<option value="MA">MA</option>
-									<option value="MG">MG</option>
-									<option value="MS">MS</option>
-									<option value="MT">MT</option>
-									<option value="PA">PA</option>
-									<option value="PB">PB</option>
-									<option value="PE">PE</option>
-									<option value="PI">PI</option>
-									<option value="PR">PR</option>
-									<option value="RJ">RJ</option>
-									<option value="RN">RN</option>
-									<option value="RS">RS</option>
-									<option value="RO">RO</option>
-									<option value="RR">RR</option>
-									<option value="SC">SC</option>
-									<option value="SE">SE</option>
-									<option value="SP">SP</option>
-									<option value="TO">TO</option>
+								<select name="cod_estados" id="cod_estados" onchange="carregaCidades(this.value)">
+									<option value=""></option>
+									<option value="1">AC</option>
+									<option value="2">AL</option>
+									<option value="3">AM</option>
+									<option value="4">AP</option>
+									<option value="5">BA</option>
+									<option value="6">CE</option>
+									<option value="7">DF</option>
+									<option value="8">ES</option>
+									<option value="9">GO</option>
+									<option value="10">MA</option>
+									<option value="11">MG</option>
+									<option value="12">MS</option>
+									<option value="13">MT</option>
+									<option value="14">PA</option>
+									<option value="15">PB</option>
+									<option value="16">PE</option>
+									<option value="17">PI</option>
+									<option value="18">PR</option>
+									<option value="19">RJ</option>
+									<option value="20">RN</option>
+									<option value="21">RO</option>
+									<option value="22">RR</option>
+									<option value="23">RS</option>
+									<option value="24">SC</option>
+									<option value="25">SE</option>
+									<option value="26">SP</option>
+									<option value="27">TO</option>
 								</select>
 							</td>
 						</tr>
@@ -238,9 +235,16 @@
 							<td>&nbsp;</td>
 						</tr>
 						
+						
 						<tr>
 							<td><b><u>CIDADE (*)</u></b>:</td>
-							<td><input maxLength="255" size="22" name="cidade" id="cidade"></td>
+							<td>
+								<div id="cidadeAjax">
+									<select name="cod_cidades" id="cod_cidades">
+										<option value="">Selecione</option>
+									</select>
+								</div>
+							</td>
 						</tr>
 						
 						<tr>
@@ -252,8 +256,8 @@
 							<td>
 								<select name="categoria" id="categoria">
 									<option value="">Selecione</option>
-									<option value="AC">Comercial</option>
-									<option value="AL">Passeio</option>
+									<option value="comercial">Comercial</option>
+									<option value="passeio">Passeio</option>
 								</select>
 							</td>
 						</tr>
@@ -267,26 +271,26 @@
 							<td>
 								<select name="eixos" id="eixos">
 									<option value="">Selecione</option>
-									<option value="um">01</option>
-									<option value="dois">02</option>
-									<option value="tres">03</option>
-									<option value="quatro">04</option>
-									<option value="cinco">05</option>
-									<option value="seis">06</option>
-									<option value="sete">07</option>
-									<option value="oito">08</option>
-									<option value="nove">09</option>
-									<option value="dez">10</option>
-									<option value="onze">11</option>
-									<option value="doze">12</option>
-									<option value="treze">13</option>
-									<option value="quatorze">14</option>
-									<option value="quinze">15</option>
-									<option value="dezesseis">16</option>
-									<option value="dezessete">17</option>
-									<option value="dezoito">18</option>
-									<option value="dezenove">19</option>
-									<option value="vinte">20</option>
+									<option value="1">01</option>
+									<option value="2">02</option>
+									<option value="3">03</option>
+									<option value="4">04</option>
+									<option value="5">05</option>
+									<option value="6">06</option>
+									<option value="7">07</option>
+									<option value="8">08</option>
+									<option value="9">09</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
 								</select>
 							</td>
 						</tr>
@@ -338,59 +342,13 @@
 							<td colspan="2" align="center"><input type="submit" value="Enviar" name="Submit">
 							&nbsp; &nbsp;<input type="reset" value="Limpar" name="Submit2"></td>
 						</tr>
-						
 					</table>
-					
-					<?php
-						//permission inside if test
-						
-						
-						if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
-							if($_SERVER["REQUEST_METHOD"] == "POST"){
-								include 'loginbd_acessopraca.php';
-								
-								$connection_string = "DRIVER={SQL Server};SERVER=$server;DATABASE=$database";
-								$conn = odbc_connect($connection_string,$user,$pass) or die('<script>alert("Erro de conexão com o banco!!");</script>');
-								
-								$placa = $_POST['placa'];
-								$marca = $_POST['marca'];
-								$modelo = $_POST['modelo'];
-								$cor = $_POST['cor'];
-								$uf = $_POST['uf'];
-								$cidade = $_POST['cidade'];
-								$eixos = $_POST['eixos'];
-								
-								# query
-								$query =
-									"insert into
-										Placas values (
-											(select max(idplaca)+1 from Placas),
-											'".strtoupper($placa)."',
-											'$marca',
-											'$modelo',
-											'$cor',
-											'$estado',
-											'$cidade',
-											'$eixos',
-											'GETDATE()',
-											'DATEADD(YEAR,1,GETDATE())',
-											1
-										)";
-								
-								//echo $query;
-								
-								# perform the query
-								$result = odbc_exec($conn, $query);
-								
-								# close the connection
-								odbc_close($conn);
-							}
-						}
-						
-						
-					?>
 				</form>
 			</div>
+			
+			<div id="ativa_destativa" style="display:none;">
+			</div>
+			
 			<div id="rodape">
 			</div>
 			<div id="direitos">

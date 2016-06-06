@@ -59,6 +59,7 @@
 					$telefone = $_POST['TelefoneCad'];
 					$login = $_POST['LoginCad'];
 					$senha = $_POST['SenhaCad'];
+					$funcao = $_POST['FuncaoCad'];
 					// 3 - resgatar o assunto digitado no formulário e  grava na variavel
 					$assunto = '[Cadastro de usuário] Acesso Praça';
 					//4 – Agora definimos a  mensagem que vai ser enviado no e-mail
@@ -68,6 +69,7 @@
 					$mensagem .= "<br><strong>Telefone:  </strong>".$telefone;
 					$mensagem .= "<br><strong>Login:  </strong>".$login;
 					$mensagem .= "<br><strong>Senha:  </strong>".md5($senha);
+					$mensagem .= "<br><strong>Funcao:  </strong>".md5($senha);
 					
 					//5 – agora inserimos as codificações corretas e tudo mais.
 					$headers =  "Content-Type:text/html; charset=UTF-8\n";
@@ -82,7 +84,6 @@
 				?>
 			</div>
 			<div id="rodape">
-				<!--<img src="imagens/RodapeCART.png">-->
 			</div>
 		</div>
 	</body>

@@ -52,14 +52,10 @@
 			</div>
 			<div id="conteudo">
 				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
-				<!--<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">-->
 					<table border="1" align="center">
 						<?php
 							if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
 								include 'loginbd_acessopraca.php';
-								
-								// $datainicial = $_POST['datainicial1'];
-								// $datafinal = $_POST['datafinal1'];
 								
 								# query
 								$query = 
@@ -68,21 +64,24 @@
 										marca,
 										modelo,
 										cor,
-										estado,
-										cidade,
+										e.Sigla,
+										c.Nome,
 										qtd_eixos,
 										data_cadastro,
 										data_vigencia,
-										ativo
+										ativo,
+										categoria
 									from
-										Placas";
+										Placas p
+										inner join Cidade c on c.CidadeId = p.cidade
+										inner join Estado e on e.EstadoId = p.estado";
 								
 								# perform the query
 								$result = odbc_exec($conn, $query);
 								
 								echo "
 									<!--Início Cabeçalho/Exemplos-->
-										<tr>
+										<tr style='background:#eeeeee;'>
 											<th>Placa</th>
 											<th>Estado</th>
 											<th>Cidade</th>
@@ -95,7 +94,7 @@
 											<th>Vigência até</th>
 											<th>Ativo</th>
 										</tr>
-										<tr align='center' style='background:#FA8072;color:white;'>
+										<!--<tr align='center' style='background:#FA8072;color:white;'>
 											<td><b><a href='#' id='placa_teste1'>TTT9999</a></b></td>
 											<td>SP</td>
 											<td>BAURU</td>
@@ -120,7 +119,7 @@
 											<td>2016-06-02 15:12:10</td>
 											<td>2017-06-02 15:12:10</td>
 											<td>NÃO</td>
-										</tr>
+										</tr>-->
 									<!--Fim Cabeçalho/Exemplos-->";
 								
 								while(odbc_fetch_row($result)){
@@ -129,29 +128,24 @@
 									$modelo = utf8_encode(odbc_result($result, 3));
 									$cor = utf8_encode(odbc_result($result, 4));
 									$estado = utf8_encode(odbc_result($result, 5));
-									$cidade = utf8_encode(odbc_result($result, 6));
+									$cidade = strtoupper(utf8_encode(odbc_result($result, 6)));
 									$qtd_eixos = utf8_encode(odbc_result($result, 7));
 									$data_cadastro = utf8_encode(odbc_result($result, 8));
 									$data_vigencia = utf8_encode(odbc_result($result, 9));
 									$ativo = utf8_encode(odbc_result($result, 10));
 									$categoria = utf8_encode(odbc_result($result, 11));
 									
-									//testa campo null e substitui por vazio
-									// if (is_null($requisitante)){
-										// $requisitante = '  ';
-									// }
-									
 									if($ativo == '1'){
 										$ativo = 'SIM';
 										echo
 											"<tr align='center' style='background:#68ff88;'>
-												<td><a href='#'>$placa</a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td><a href='#'><b>$placa</b></a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
 												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
 											</tr>";
 									}else{
 										$ativo = 'NÃO';
 										"<tr align='center' style='background:#FA8072;color:white;'>
-												<td><a href='#'>$placa</a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td><a href='#'><b>$placa</b></a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
 												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
 											</tr>";
 									}
@@ -171,11 +165,8 @@
 									</script>
 									Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
 							}
-							
 						?>
-						
 					</table>
-				<!--</form>-->
 			</div>
 			<div id="rodape">
 			</div>

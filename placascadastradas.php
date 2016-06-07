@@ -10,11 +10,30 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="content-language" content="pt-br">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
+		<script>
+			function carregaDivExclusao(valor1,ativo1) {
+				if (ativo1 == 'SIM'){
+					document.getElementById("idlinha"+valor1).style.background = "#FA8072";
+					document.getElementById("idlinha"+valor1).style.color = "#ffffff";
+					document.getElementById("idcelula"+valor1).innerHTML = "NÃO <a href='#' onclick=carregaDivExclusao('valor1','ativo1')><b>(alterar)</b></a>";
+				}else{
+					document.getElementById("idlinha").style.background = "#68ff88";
+					document.getElementById("idlinha").style.color = "#000000";
+					document.getElementById("idcelula").innerHTML = "SIM <a href='#' onclick=carregaDivExclusao('valor1','ativo1')><b>(alterar)</b></a>";
+				}
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "atualizaplaca.php?placa="+valor1+"&ativo="+ativo1, true);
+				xhttp.send();
+			}
+		</script>
+		
 	</head>
 	<body>
 		<div id="site">
 			<div id="cabecalho">
-				<div id="login">
+				<div id="login">	
 					<form method="post" action="login.php">
 						<table>
 							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
@@ -50,6 +69,7 @@
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
+			
 			<div id="conteudo">
 				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
 					<table border="1" align="center">
@@ -94,33 +114,7 @@
 											<th>Vigência até</th>
 											<th>Ativo</th>
 										</tr>
-										<!--<tr align='center' style='background:#FA8072;color:white;'>
-											<td><b><a href='#' id='placa_teste1'>TTT9999</a></b></td>
-											<td>SP</td>
-											<td>BAURU</td>
-											<td>Comercial</td>
-											<td>5</td>
-											<td>".strtoupper('Volkswagen')."</td>
-											<td>TXND 4.0</td>
-											<td>BRANCO</td>
-											<td>2016-06-02 15:11:35</td>
-											<td>2017-06-02 15:11:35</td>
-											<td>NÃO</td>
-										</tr>
-										<tr align='center' style='background:#FA8072;color:white;'>
-											<td><b><a href='#' id='placa_teste2'>YYY8888</a></b></td>
-											<td>PR</td>
-											<td>CURITIBA</td>
-											<td>Comercial</td>
-											<td>7</td>
-											<td>VOLVO</td>
-											<td>VLV 5.2</td>
-											<td>VERMELHO</td>
-											<td>2016-06-02 15:12:10</td>
-											<td>2017-06-02 15:12:10</td>
-											<td>NÃO</td>
-										</tr>-->
-									<!--Fim Cabeçalho/Exemplos-->";
+									<!--Fim Cabeçalho-->";
 								
 								while(odbc_fetch_row($result)){
 									$placa = utf8_encode(odbc_result($result, 1));
@@ -137,16 +131,17 @@
 									
 									if($ativo == '1'){
 										$ativo = 'SIM';
+										// echo "<script>alert(placa: ".$placa.");</script>";
 										echo
-											"<tr align='center' style='background:#68ff88;'>
-												<td><a href='#'><b>$placa</b></a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+											"<tr id='idlinha$placa' align='center' style='background:#68ff88;'>
+												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
 											</tr>";
 									}else{
 										$ativo = 'NÃO';
-										"<tr align='center' style='background:#FA8072;color:white;'>
-												<td><a href='#'><b>$placa</b></a></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td>$ativo</td>
+										"<tr id='idlinha$placa' align='center' style='background:#FA8072;color:white;'>
+												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
 											</tr>";
 									}
 								}

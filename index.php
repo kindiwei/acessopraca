@@ -345,10 +345,6 @@
 					</table>
 				</form>
 			</div>
-			
-			<div id="ativa_destativa" style="display:none;">
-			</div>
-			
 			<div id="rodape">
 			</div>
 			<div id="direitos">

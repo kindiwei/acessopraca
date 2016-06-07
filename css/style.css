@@ -7,15 +7,15 @@
 
 @font-face {
    font-family:Fonte-tudo;
-   /*src: url("http://10.30.1.134/acessopraca/css/OpenSans-Semibold.ttf");*/
-   src: url("http://localhost/acessopraca/css/OpenSans-Semibold.ttf");
+   src: url("http://10.30.1.134/acessopraca/css/OpenSans-Semibold.ttf");
+   /*src: url("http://localhost/acessopraca/css/OpenSans-Semibold.ttf");*/
    /*src: url(../arquivos/AntennaCondLight.eot);*/
    /*src: local('AntennaCondLight'), local('AntennaCondLight'), url(http://sgapinterno.cart.invepar.com.br:8080/css/AntennaCondLight.otf) format('otf');*/
 }
 
 #cabecalho{
 	position:relative;
-	/*background-image: url("http://10.30.1.134/acessopraca/imagens/CabecalhoCadastro.png");*/
+	background-image: url("http://10.30.1.134/acessopraca/imagens/CabecalhoCadastro.png");
 	background-image: url("http://localhost/acessopraca/imagens/CabecalhoCadastro.png");
 	margin:0;
 	padding: 0;

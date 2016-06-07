@@ -9,18 +9,18 @@
 	
 	//aqui ele pega o valor do codigo do estado selecionado no site
 	$placa = htmlspecialchars($_GET["placa"]);
-	$ativo = htmlspecialchars($_GET["ativo"]);
+	$ativar = htmlspecialchars($_GET["ativar"]);
 	
-	if($ativo == 'SIM'){
-		$ativo = 1;
+	if($ativar == 'SIM'){
+		$ativar = 0;
 	}else{
-		$ativo = 0;
+		$ativar = 1;
 	}
 	
 	# query
 	$query = 
 			"UPDATE Placas
-				set ativo = $ativo
+				set ativo = $ativar
 			WHERE
 				placa='$placa'";
 				
@@ -28,6 +28,25 @@
 	$result = odbc_exec($conn, $query);
 	
 	odbc_fetch_row($result);
+
+	
+	# query
+	$query = 
+		"select
+			p.ativo
+		from
+			Placas p
+		where
+			p.placa='$placa'";
+	
+	# perform the query
+	$result = odbc_exec($conn, $query);
+	
+	odbc_fetch_row($result);
+	
+	$ativobanco = utf8_encode(odbc_result($result, 1));
+	
+	echo "Ativo no banco: $ativobanco";
 
 	# close the connection
 	odbc_close($conn);

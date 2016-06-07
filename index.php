@@ -67,8 +67,6 @@
 				document.getElementById("categoria").style.backgroundColor = "";
 				document.getElementById("eixos").style.backgroundColor = "";
 				
-				// alert("tamanho da string: "+document.cadastroplaca.placa.value.length);
-				
 				if (document.cadastroplaca.placa.value == ""){
 					alert("Favor preencher o campo Placa");
 					document.getElementById("placa").style.backgroundColor = "ffb8b5";

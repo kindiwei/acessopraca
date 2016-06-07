@@ -13,19 +13,31 @@
 		
 		<script>
 			function carregaDivExclusao(valor1,ativo1) {
+				var xhttp = new XMLHttpRequest();
+				
+				xhttp.onreadystatechange = function() {
+					if (xhttp.readyState == 4 && xhttp.status == 200) {
+						document.getElementById("demo").innerHTML = xhttp.responseText;
+					}
+				};
+				
+				xhttp.open("GET", "atualizaplaca.php?placa="+valor1+"&ativar="+ativo1, true);
+				xhttp.send();
 				if (ativo1 == 'SIM'){
+					//TROCA O VALOR ATIVO PARA SUBSTITUIR NO BANCO
+					//CASO SEJA SIM, VAI TROCAR PARA NÃO
+					ativo1 = 'NÃO';
 					document.getElementById("idlinha"+valor1).style.background = "#FA8072";
 					document.getElementById("idlinha"+valor1).style.color = "#ffffff";
-					document.getElementById("idcelula"+valor1).innerHTML = "NÃO <a href='#' onclick=carregaDivExclusao('valor1','ativo1')><b>(alterar)</b></a>";
+					document.getElementById("idcelula"+valor1).innerHTML = "NÃO";
 				}else{
-					document.getElementById("idlinha").style.background = "#68ff88";
-					document.getElementById("idlinha").style.color = "#000000";
-					document.getElementById("idcelula").innerHTML = "SIM <a href='#' onclick=carregaDivExclusao('valor1','ativo1')><b>(alterar)</b></a>";
+					//TROCA O VALOR ATIVO PARA SUBSTITUIR NO BANCO
+					//CASO SEJA CONTRÁRIO, VAI TROCAR PARA SIM
+					ativo1 = 'SIM';
+					document.getElementById("idlinha"+valor1).style.background = "#68ff88";
+					document.getElementById("idlinha"+valor1).style.color = "#000000";
+					document.getElementById("idcelula"+valor1).innerHTML = "SIM";
 				}
-				
-				var xhttp = new XMLHttpRequest();
-				xhttp.open("GET", "atualizaplaca.php?placa="+valor1+"&ativo="+ativo1, true);
-				xhttp.send();
 			}
 		</script>
 		
@@ -69,6 +81,8 @@
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
+			
+			<div id='demo'></div>
 			
 			<div id="conteudo">
 				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
@@ -131,17 +145,19 @@
 									
 									if($ativo == '1'){
 										$ativo = 'SIM';
-										// echo "<script>alert(placa: ".$placa.");</script>";
 										echo
 											"<tr id='idlinha$placa' align='center' style='background:#68ff88;'>
 												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td>
+												<td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
 											</tr>";
 									}else{
 										$ativo = 'NÃO';
-										"<tr id='idlinha$placa' align='center' style='background:#FA8072;color:white;'>
+										echo
+											"<tr id='idlinha$placa' align='center' style='background:#FA8072;color:white;'>
 												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td><td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
+												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td>
+												<td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','NAO')><b>(alterar)</b></a></td>
 											</tr>";
 									}
 								}

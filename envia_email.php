@@ -69,7 +69,7 @@
 					$mensagem .= "<br><strong>Telefone:  </strong>".$telefone;
 					$mensagem .= "<br><strong>Login:  </strong>".$login;
 					$mensagem .= "<br><strong>Senha:  </strong>".md5($senha);
-					$mensagem .= "<br><strong>Funcao:  </strong>".md5($senha);
+					$mensagem .= "<br><strong>Funcao:  </strong>".$funcao;
 					
 					//5 – agora inserimos as codificações corretas e tudo mais.
 					$headers =  "Content-Type:text/html; charset=UTF-8\n";

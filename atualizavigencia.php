@@ -3,6 +3,7 @@
 	
 	if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
 		header( 'Cache-Control: no-cache' );
+		// header( 'Content-type: application/xml; charset="utf-8"', true );
 		//dados da conexao
 		include 'loginbd_acessopraca.php';
 		
@@ -11,21 +12,13 @@
 		
 		//aqui ele pega o valor do codigo do estado selecionado no site
 		$placa = htmlspecialchars($_GET["placa"]);
-		$ativar = htmlspecialchars($_GET["ativar"]);
-		
-		//change value of variable to number
-		if($ativar == 'SIM'){
-			$ativar = 0;
-		}else{
-			$ativar = 1;
-		}
 		
 		//here, will update with new datas have been passed with parameters (get method)
 		$query_update_new =
-			"UPDATE Placas
-				set ativo = $ativar,dataatualizacao=getdate()
-			WHERE
-				placa='$placa'";
+				"UPDATE Placas
+					set data_vigencia = DATEADD(YEAR,1,GETDATE()),dataatualizacao=GETDATE()
+				WHERE
+					placa='$placa'";
 		
 		//exec update query one time
 		$result = odbc_exec($conn, $query_update_new);
@@ -33,14 +26,14 @@
 		
 		$query_oldDatas_plate = 
 			"select
-				[placa]
+				[idplaca]
+				,[placa]
 				,[idmarca]
 				,[cor]
 				,GETDATE()
-				,[data_cadastro]
+				,GETDATE()
 				,[data_vigencia]
 				,[ativo]
-				,[idplaca]
 			from
 				Placas
 			where
@@ -49,17 +42,17 @@
 		#exec one time
 		$result = odbc_exec($conn, $query_oldDatas_plate);
 		odbc_fetch_row($result);
-		
+
 		//get datas of that plate
-		$placa = utf8_encode(odbc_result($result, 1));
-		$idmarca = utf8_encode(odbc_result($result, 2));
-		$cor = utf8_encode(odbc_result($result, 3));
-		$datainsercao = utf8_encode(odbc_result($result, 4));
-		$datacadastro = utf8_encode(odbc_result($result, 5));
-		$datavigencia = utf8_encode(odbc_result($result, 6));
-		$ativo = utf8_encode(odbc_result($result, 7));
+		$idplaca = utf8_encode(odbc_result($result, 1));
+		$placa = utf8_encode(odbc_result($result, 2));
+		$idmarca = utf8_encode(odbc_result($result, 3));
+		$cor = utf8_encode(odbc_result($result, 4));
+		$datainsercao = utf8_encode(odbc_result($result, 5));
+		$datacadastro = utf8_encode(odbc_result($result, 6));
+		$datavigencia = utf8_encode(odbc_result($result, 7));
+		$ativo = utf8_encode(odbc_result($result, 8));
 		$usuario = $_SESSION['login'];
-		$idplaca = utf8_encode(odbc_result($result, 8));
 		
 		# query to insert values of plate history
 		$query_insert =
@@ -74,10 +67,10 @@
 				'$datacadastro',
 				'$datavigencia',
 				$ativo,
-				(select idusuario from usuarios where usuario = '$usuario')
-				,$idplaca
+				(select idusuario from usuarios where usuario = '$usuario'),
+				$idplaca
 			)";
-		
+			
 		//exec the query one time
 		odbc_exec($conn, $query_insert);
 

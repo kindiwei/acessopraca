@@ -12,32 +12,52 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		
 		<script>
+			//carrega div para a desativação do cadastro
 			function carregaDivExclusao(valor1,ativo1) {
 				var xhttp = new XMLHttpRequest();
 				
 				xhttp.onreadystatechange = function() {
 					if (xhttp.readyState == 4 && xhttp.status == 200) {
-						document.getElementById("demo").innerHTML = xhttp.responseText;
+						//document.getElementById("demo").innerHTML = "atualizaplaca.php?placa="+valor1+"&ativar="+ativo1;
+						window.location='placascadastradas.php';
+					}
+				};
+				xhttp.open("GET", "atualizaplaca.php?placa="+valor1+"&ativar="+ativo1, true);
+				xhttp.send();
+			}
+			
+			function carregaHistorico(placa1) {
+				var xhttp = new XMLHttpRequest();
+				
+				xhttp.onreadystatechange = function() {
+					if (xhttp.readyState == 4 && xhttp.status == 200) {
+						document.getElementById("placascadastro").style.display='none';
+						document.getElementById("carregahistoricodiv").style.display='block';
+						document.getElementById("carregahistoricodiv").innerHTML = xhttp.responseText;
+						document.getElementById("botaovoltarplacas").style.display='block';
+					}
+				};
+				xhttp.open("GET", "carregaHistorico.php?placa="+placa1, true);
+				xhttp.send();
+			}
+			
+			// function atualizaCadastro(placa,estado,cidade,categoria,qtdeixos,marca,modelo,cor,datacadastro,datavigencia,ativo) {
+			function atualizaCadastro(placa1) {
+				var xhttp = new XMLHttpRequest();
+				
+				xhttp.onreadystatechange = function() {
+					if (xhttp.readyState == 4 && xhttp.status == 200) {
+						// document.getElementById("demo").innerHTML = xhttp.responseText;
+						window.location='placascadastradas.php';
 					}
 				};
 				
-				xhttp.open("GET", "atualizaplaca.php?placa="+valor1+"&ativar="+ativo1, true);
+				xhttp.open("GET", "atualizavigencia.php?placa="+placa1, true);
 				xhttp.send();
-				if (ativo1 == 'SIM'){
-					//TROCA O VALOR ATIVO PARA SUBSTITUIR NO BANCO
-					//CASO SEJA SIM, VAI TROCAR PARA NÃO
-					ativo1 = 'NÃO';
-					document.getElementById("idlinha"+valor1).style.background = "#FA8072";
-					document.getElementById("idlinha"+valor1).style.color = "#ffffff";
-					document.getElementById("idcelula"+valor1).innerHTML = "NÃO";
-				}else{
-					//TROCA O VALOR ATIVO PARA SUBSTITUIR NO BANCO
-					//CASO SEJA CONTRÁRIO, VAI TROCAR PARA SIM
-					ativo1 = 'SIM';
-					document.getElementById("idlinha"+valor1).style.background = "#68ff88";
-					document.getElementById("idlinha"+valor1).style.color = "#000000";
-					document.getElementById("idcelula"+valor1).innerHTML = "SIM";
-				}
+			}
+			
+			function atualizaPagina() {
+				window.location='placascadastradas.php';
 			}
 		</script>
 		
@@ -59,7 +79,7 @@
 											echo
 												"<div id='cadastro_esqueci'>
 													<a href='cadastrousuarios.php'>Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
-													<a href='#'>Esqueci minha senha</a>
+													<a href='esquecisenha.php'>Esqueci minha senha</a>
 												</div>";
 										}else{
 											echo
@@ -84,100 +104,137 @@
 			
 			<div id='demo'></div>
 			
+			<div id='divcarregacsv'></div>
+			
 			<div id="conteudo">
 				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
-					<table border="1" align="center">
-						<?php
-							if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
-								include 'loginbd_acessopraca.php';
-								
-								# query
-								$query = 
-									"select
-										placa,
-										marca,
-										modelo,
-										cor,
-										e.Sigla,
-										c.Nome,
-										qtd_eixos,
-										data_cadastro,
-										data_vigencia,
-										ativo,
-										categoria
-									from
-										Placas p
-										inner join Cidade c on c.CidadeId = p.cidade
-										inner join Estado e on e.EstadoId = p.estado";
-								
-								# perform the query
-								$result = odbc_exec($conn, $query);
-								
-								echo "
-									<!--Início Cabeçalho/Exemplos-->
-										<tr style='background:#eeeeee;'>
-											<th>Placa</th>
-											<th>Estado</th>
-											<th>Cidade</th>
-											<th>Categoria</th>
-											<th>Eixos</th>
-											<th>Marca</th>
-											<th>Modelo</th>
-											<th>Cor</th>
-											<th>Data Cadastro</th>
-											<th>Vigência até</th>
-											<th>Ativo</th>
-										</tr>
-									<!--Fim Cabeçalho-->";
-								
-								while(odbc_fetch_row($result)){
-									$placa = utf8_encode(odbc_result($result, 1));
-									$marca = utf8_encode(odbc_result($result, 2));
-									$modelo = utf8_encode(odbc_result($result, 3));
-									$cor = utf8_encode(odbc_result($result, 4));
-									$estado = utf8_encode(odbc_result($result, 5));
-									$cidade = strtoupper(utf8_encode(odbc_result($result, 6)));
-									$qtd_eixos = utf8_encode(odbc_result($result, 7));
-									$data_cadastro = utf8_encode(odbc_result($result, 8));
-									$data_vigencia = utf8_encode(odbc_result($result, 9));
-									$ativo = utf8_encode(odbc_result($result, 10));
-									$categoria = utf8_encode(odbc_result($result, 11));
+					<div id="carregahistoricodiv" style="display:none;text-align:center">
+					</div>
+					<div id="placascadastro">
+						<table align="center" style="border-collapse: collapse;border: 1px solid black;">
+							<?php
+								if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
+									include 'loginbd_acessopraca.php';
 									
-									if($ativo == '1'){
-										$ativo = 'SIM';
-										echo
-											"<tr id='idlinha$placa' align='center' style='background:#68ff88;'>
-												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td>
-												<td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
-											</tr>";
-									}else{
-										$ativo = 'NÃO';
-										echo
-											"<tr id='idlinha$placa' align='center' style='background:#FA8072;color:white;'>
-												<td><b>$placa</b></td><td>$estado</td><td>$cidade</td><td>$categoria</td><td>$qtd_eixos</td>
-												<td>$marca</td><td>$modelo</td><td>$cor</td><td>$data_cadastro</td><td>$data_vigencia</td>
-												<td id='idcelula$placa'>$ativo <a href='#' onclick=carregaDivExclusao('$placa','NAO')><b>(alterar)</b></a></td>
-											</tr>";
-									}
-								}
-								
-								# close the connection
-								odbc_close($conn);
-							}else{
-								echo 
-									"
-									<script>
-										alert('Você não está cadastrado ou não faz parte do grupo de permissão de acesso. 6 Segundos para redirecionar...');
-										setTimeout(redirect, 6000);
-										function redirect() {
-											window.location='index.php';
+									# query
+									$query = 
+										"select
+											placa,
+											m.marca,
+											modelo,
+											cor,
+											e.Sigla,
+											c.Nome,
+											qtd_eixos,
+											dataatualizacao,
+											data_vigencia,
+											ativo,
+											categoria
+										from
+											Placas p
+											inner join Cidade c on c.CidadeId = p.cidade
+											inner join Estado e on e.EstadoId = p.estado
+											left join Marcas m on m.idmarca = p.idmarca";
+									
+									# perform the query
+									$result = odbc_exec($conn, $query);
+									
+									if(odbc_fetch_row($result)){
+										//exec again the script to back start
+										$result = odbc_exec($conn, $query);
+										echo "
+											<!--Início Cabeçalho/Exemplos-->
+												<tr style='background:#eeeeee;border: 1px solid black;'>
+													<th style='border: 1px solid black;'>Placa</th>
+													<th style='border: 1px solid black;'>Estado</th>
+													<th style='border: 1px solid black;'>Cidade</th>
+													<th style='border: 1px solid black;'>Categoria</th>
+													<th style='border: 1px solid black;'>Eixos</th>
+													<th style='border: 1px solid black;'>Marca</th>
+													<th style='border: 1px solid black;'>Modelo</th>
+													<th style='border: 1px solid black;'>Cor</th>
+													<th style='border: 1px solid black;'>Data Cadastro</th>
+													<th style='border: 1px solid black;'>Vigência até</th>
+													<th style='border: 1px solid black;'>Ativo</th>
+													<th style='border: 1px solid black;'>Atualizar vigência</th>
+												</tr>
+											<!--Fim Cabeçalho-->";
+										
+										while(odbc_fetch_row($result)){
+											$placa = utf8_encode(odbc_result($result, 1));
+											$marca = utf8_encode(odbc_result($result, 2));
+											$modelo = utf8_encode(odbc_result($result, 3));
+											$cor = utf8_encode(odbc_result($result, 4));
+											$estado = utf8_encode(odbc_result($result, 5));
+											$cidade = strtoupper(utf8_encode(odbc_result($result, 6)));
+											$qtd_eixos = utf8_encode(odbc_result($result, 7));
+											$data_cadastro = utf8_encode(odbc_result($result, 8));
+											$data_vigencia = utf8_encode(odbc_result($result, 9));
+											$ativo = utf8_encode(odbc_result($result, 10));
+											$categoria = utf8_encode(odbc_result($result, 11));
+											
+											if($ativo == '1'){
+												$ativo = 'SIM';
+												echo
+													"<tr id='idlinha$placa' align='center' style='background:#68ff88;'>
+														<td style='border: 1px solid black;'>
+															<a href='#' style='text-decoration:none;' onclick=carregaHistorico('$placa')><b>$placa</b></a>
+														</td><td style='border: 1px solid black;'>$estado</td><td style='border: 1px solid black;'>$cidade</td><td style='border: 1px solid black;'>$categoria</td><td style='border: 1px solid black;'>$qtd_eixos</td>
+														<td style='border: 1px solid black;'>$marca</td><td style='border: 1px solid black;'>$modelo</td><td style='border: 1px solid black;'>$cor</td><td style='border: 1px solid black;'>".date_format(date_create($data_cadastro), 'd-m-Y H:i')."</td><td style='border: 1px solid black;'>".date_format(date_create($data_vigencia), 'd-m-Y H:i')."</td>
+														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <a href='#' style='text-decoration:none;' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
+														<td style='border: 1px solid black;' id='idatualizacelula$placa'>
+															<a href='#' style='text-decoration:none;' onclick=atualizaCadastro('$placa')><b>(atualizar)</b></a>
+														</td>
+													</tr>";
+											}else{
+												$ativo = 'NÃO';
+												echo
+													"<tr id='idlinha$placa' align='center' style='background:#FA8072;color:white;'>
+														<td style='border: 1px solid black;'>
+															<a href='#' style='text-decoration:none;' onclick=carregaHistorico('$placa')><b>$placa</b></a>
+														</td>
+														<td style='border: 1px solid black;'>$estado</td>
+														<td style='border: 1px solid black;'>$cidade</td>
+														<td style='border: 1px solid black;'>$categoria</td>
+														<td style='border: 1px solid black;'>$qtd_eixos</td>
+														<td style='border: 1px solid black;'>$marca</td>
+														<td style='border: 1px solid black;'>$modelo</td>
+														<td style='border: 1px solid black;'>$cor</td>
+														<td style='border: 1px solid black;'>".date_format(date_create($data_cadastro), 'd-m-Y H:i')."</td>
+														<td style='border: 1px solid black;'>".date_format(date_create($data_vigencia), 'd-m-Y H:i')."</td>
+														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <a href='#' style='text-decoration:none;' onclick=carregaDivExclusao('$placa','NAO')><b>(alterar)</b></a></td>
+														<td style='border: 1px solid black;' id='idatualizacelula$placa'>
+															<a href='#' style='text-decoration:none;' onclick=atualizaCadastro('$placa')><b>(atualizar)</b></a>
+														</td>
+													</tr>";
+											}
 										}
-									</script>
-									Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
-							}
-						?>
-					</table>
+									}else{
+										echo "<p style='font-size:20px;text-align:center;'>Sem placas cadastradas</p>";
+									}
+									
+									
+									# close the connection
+									odbc_close($conn);
+								}else{
+									echo 
+										"
+										<script>
+											alert('Você não está cadastrado ou não faz parte do grupo de permissão de acesso. 6 Segundos para redirecionar...');
+											setTimeout(redirect, 6000);
+											function redirect() {
+												window.location='index.php';
+											}
+										</script>
+										Se não for direcionado automaticamente, clique <a href='index.php'>aqui</a>.";
+								}
+							?>
+						</table>
+					</div>
+					<div id="botaovoltarplacas" style='text-align:center;display:none;'>
+						<br>
+						<input type="submit" value="Voltar" name="Submit" onclick=atualizaPagina()>
+					</div>
 			</div>
 			<div id="rodape">
 			</div>

@@ -130,12 +130,21 @@
 			}
 			
 			function carregaCidades(codCidade) {
+				// esconde cod_cidades
+				document.getElementById("cod_cidades").style.display = "none";
+				// mostra a mensagem "Aguarde, carregando"
+				document.getElementById("carregando").style.display = "block";
+				
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (xhttp.readyState == 4 && xhttp.status == 200) {
+						document.getElementById("carregando").style.display = "none";
+						document.getElementById("cod_cidades").style.display = "block";
 						document.getElementById("cod_cidades").innerHTML = xhttp.responseText;
+						document.getElementById("cod_cidades").focus();
 					}
 				};
+				
 				xhttp.open("GET", "carregacidades.php?codestados="+codCidade, true);
 				xhttp.send();
 			}
@@ -158,7 +167,7 @@
 											echo
 												"<div id='cadastro_esqueci'>
 													<a href='cadastrousuarios.php'>Cadastrar</a>&nbsp;&nbsp;&nbsp;&nbsp;
-													<a href='#'>Esqueci minha senha</a>
+													<a href='esquecisenha.php'>Esqueci minha senha</a>
 												</div>";
 										}else{
 											echo
@@ -183,7 +192,7 @@
 			<div id="conteudo">
 				<h1 align="center"><u>Cadastro de Placas</u></h1><br>
 				<form name="cadastroplaca" onsubmit="return TestaCampos();" action="envia_placa_banco.php" method="post">
-					<table cellSpacing="0" cellPadding="0" border="0" align="center">
+					<table cellSpacing="0" cellPadding="0" align="center">
 						<tr>
 							<td><b><u>PLACA (*)</u></b>:</td>
 							<td><input maxLength="255" size="40" name="placa" id="placa"> </td>
@@ -238,6 +247,7 @@
 							<td><b><u>CIDADE (*)</u></b>:</td>
 							<td>
 								<div id="cidadeAjax">
+									<span id="carregando" style="display:none;">Aguarde, carregando cidades...</span>
 									<select name="cod_cidades" id="cod_cidades">
 										<option value="">Selecione</option>
 									</select>
@@ -256,6 +266,7 @@
 									<option value="">Selecione</option>
 									<option value="comercial">Comercial</option>
 									<option value="passeio">Passeio</option>
+									<option value="moto">Moto</option>
 								</select>
 							</td>
 						</tr>
@@ -299,7 +310,93 @@
 						
 						<tr>
 							<td >MARCA:</td>
-							<td><input maxLength="255" size="40" name="marca" id="marca"></td>
+							<td>
+								<select name="marca" id="marca">
+									<option value='0'>Selecione</option>
+									<option value='1'>AGRALE</option>
+									<option value='2'>ALBERTI</option>
+									<option value='3'>AMV</option>
+									<option value='4'>ASA</option>
+									<option value='5'>ATMAN</option>
+									<option value='6'>AUDI</option>
+									<option value='7'>AVA</option>
+									<option value='8'>BEACH</option>
+									<option value='9'>BMW</option>
+									<option value='10'>BP</option>
+									<option value='11'>BRAMONT</option>
+									<option value='12'>BRANDY</option>
+									<option value='13'>BRW</option>
+									<option value='14'>BUENO</option>
+									<option value='15'>CALOI</option>
+									<option value='16'>CASE</option>
+									<option value='17'>CBP</option>
+									<option value='18'>CHERY</option>
+									<option value='19'>CHEVROLET</option>
+									<option value='20'>CHRYSLER</option>
+									<option value='21'>CITROEN</option>
+									<option value='22'>COMIL</option>
+									<option value='23'>DAELIM</option>
+									<option value='24'>DAF</option>
+									<option value='25'>DAFRA</option>
+									<option value='26'>DKW</option>
+									<option value='27'>DODGE</option>
+									<option value='28'>DUCATI</option>
+									<option value='29'>EFFA</option>
+									<option value='30'>EGO</option>
+									<option value='31'>EMIS</option>
+									<option value='32'>EMME</option>
+									<option value='33'>ENGESA</option>
+									<option value='34'>ENVEMO</option>
+									<option value='35'>FERCAR</option>
+									<option value='36'>FIAT</option>
+									<option value='37'>FIBRAV</option>
+									<option value='38'>FLASH</option>
+									<option value='39'>FNM</option>
+									<option value='40'>FORD</option>
+									<option value='41'>FYBER</option>
+									<option value='42'>GARINNI</option>
+									<option value='43'>GIANT S</option>
+									<option value='44'>GURGEL</option>
+									<option value='45'>HAOBAO</option>
+									<option value='47'>HERACLIDES</option>
+									<option value='48'>HOME-CAR</option>
+									<option value='49'>HONDA</option>
+									<option value='50'>HYOSUNG</option>
+									<option value='51'>HYUNDAI</option>
+									<option value='52'>IMPALA</option>
+									<option value='54'>IVECO</option>
+									<option value='55'>JAGUAR</option>
+									<option value='56'>JAWA</option>
+									<option value='57'>JEEP</option>
+									<option value='58'>KAWASAKI</option>
+									<option value='59'>KENWORTH</option>
+									<option value='60'>KIA</option>
+									<option value='62'>LADA</option>
+									<option value='63'>LAMBRETTA</option>
+									<option value='61'>LAND ROVER</option>
+									<option value='64'>LEXUS</option>
+									<option value='65'>MARMON</option>
+									<option value='66'>MAZDA</option>
+									<option value='68'>MMC</option>
+									<option value='69'>NAVISTAR</option>
+									<option value='70'>NISSAN</option>
+									<option value='71'>PEUGEOT</option>
+									<option value='72'>PGO</option>
+									<option value='73'>PIAGGIO</option>
+									<option value='74'>PORSCHE</option>
+									<option value='75'>RENAULT</option>
+									<option value='76'>SANYANG</option>
+									<option value='77'>SCANIA</option>
+									<option value='78'>SEAT</option>
+									<option value='79'>SKODA</option>
+									<option value='80'>SUBARU</option>
+									<option value='81'>SUZUKI</option>
+									<option value='82'>TOYOTA</option>
+									<option value='83'>TRIUMPH</option>
+									<option value='84'>VOLKSWAGEN</option>
+									<option value='85'>VOLVO</option>
+								</select>
+							</td>
 						</tr>
 						
 						<tr>

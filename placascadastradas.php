@@ -32,6 +32,7 @@
 				xhttp.onreadystatechange = function() {
 					if (xhttp.readyState == 4 && xhttp.status == 200) {
 						document.getElementById("placascadastro").style.display='none';
+						document.getElementById("searchInPage").style.display='none';
 						document.getElementById("carregahistoricodiv").style.display='block';
 						document.getElementById("carregahistoricodiv").innerHTML = xhttp.responseText;
 						document.getElementById("botaovoltarplacas").style.display='block';
@@ -59,6 +60,52 @@
 			function atualizaPagina() {
 				window.location='placascadastradas.php';
 			}
+			
+			var TRange=null;
+			
+			function findString(){
+				str = document.getElementById("valorprocuraplaca").value;
+				if (parseInt(navigator.appVersion)<4)
+					return;
+				var strFound;
+				if(window.find){
+					// alert(document.getElementById("placascadastro").value);
+					// CODE FOR BROWSERS THAT SUPPORT window.find
+					strFound=self.find(str);
+					// alert(strFound);
+					// if(!strFound){
+						// strFound=self.find(str,0,1);
+						// if (!self.find(str,0,1))
+							// return;
+						// while (self.find(str,0,1)){
+							// alert(self.find(str,0,1));
+							// //continue;
+						// }
+					// }
+				}else
+					if(navigator.appName.indexOf("Microsoft")!=-1){
+					// EXPLORER-SPECIFIC CODE
+						if(TRange!=null){
+							TRange.collapse(false);
+							strFound=TRange.findText(str);
+						if(strFound)
+							TRange.select();
+						}
+						if(TRange==null || strFound==0){
+							TRange=self.document.body.createTextRange();
+							strFound=TRange.findText(str);
+							if(strFound)
+								TRange.select();
+						}
+					}else
+						if(navigator.appName=="Opera"){
+							alert ("Navegador Opera não suportado.")
+							return;
+						}
+						if (!strFound)
+							alert ("Texto '"+str+"' não enconttrado!")
+						return;
+			}
 		</script>
 		
 	</head>
@@ -68,7 +115,7 @@
 				<div id="login">	
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" id="login1" name="login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>
@@ -97,7 +144,7 @@
 			<div id="menu">
 				<ul>
 					<li><a href="index.php">Cadastro de Placas</a></li>
-					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
+					<li><a href="placascadastradas.php" style="background:#868686;">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
@@ -107,11 +154,18 @@
 			<div id='divcarregacsv'></div>
 			
 			<div id="conteudo">
-				<h1 align="center"><u>Placas Cadastradas</u></h1><br>
+				<!--<h1 align="center"><u>Placas Cadastradas</u></h1><br>-->
+					<br>
+					<div id="searchInPage" style="text-align:center">
+						<!--<form name="procuraplaca" id="procuraplaca" onsubmit="findString()">-->
+							<input id="valorprocuraplaca" type="text" size=15> <button onclick="findString()">Procurar Placa</button>
+						<!--</form>-->
+						<br><br><br>
+					</div>
 					<div id="carregahistoricodiv" style="display:none;text-align:center">
 					</div>
 					<div id="placascadastro">
-						<table align="center" style="border-collapse: collapse;border: 1px solid black;">
+						<table align="center" style="border-collapse: collapse;border: 1px solid black;" id="tableidplacas">
 							<?php
 								if( (isset($_SESSION['login']) == true) and (isset($_SESSION['senha']) == true) and ( ($_SESSION['funcao'] == 'admin') or ($_SESSION['funcao'] == 'ti') ) ){
 									include 'loginbd_acessopraca.php';
@@ -179,11 +233,19 @@
 													"<tr id='idlinha$placa' align='center' style='background:#68ff88;'>
 														<td style='border: 1px solid black;'>
 															<a href='#' style='text-decoration:none;' onclick=carregaHistorico('$placa')><b>$placa</b></a>
-														</td><td style='border: 1px solid black;'>$estado</td><td style='border: 1px solid black;'>$cidade</td><td style='border: 1px solid black;'>$categoria</td><td style='border: 1px solid black;'>$qtd_eixos</td>
-														<td style='border: 1px solid black;'>$marca</td><td style='border: 1px solid black;'>$modelo</td><td style='border: 1px solid black;'>$cor</td><td style='border: 1px solid black;'>".date_format(date_create($data_cadastro), 'd-m-Y H:i')."</td><td style='border: 1px solid black;'>".date_format(date_create($data_vigencia), 'd-m-Y H:i')."</td>
-														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <a href='#' style='text-decoration:none;' onclick=carregaDivExclusao('$placa','$ativo')><b>(alterar)</b></a></td>
+														</td>
+														<td style='border: 1px solid black;'>$estado</td>
+														<td style='border: 1px solid black;'>$cidade</td>
+														<td style='border: 1px solid black;'>$categoria</td>
+														<td style='border: 1px solid black;'>$qtd_eixos</td>
+														<td style='border: 1px solid black;'>$marca</td>
+														<td style='border: 1px solid black;'>$modelo</td>
+														<td style='border: 1px solid black;'>$cor</td>
+														<td style='border: 1px solid black;'>".date_format(date_create($data_cadastro), 'd-m-Y H:i')."</td>
+														<td style='border: 1px solid black;'>".date_format(date_create($data_vigencia), 'd-m-Y H:i')."</td>
+														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <button onclick=carregaDivExclusao('$placa','$ativo')>Alterar</button></td>
 														<td style='border: 1px solid black;' id='idatualizacelula$placa'>
-															<a href='#' style='text-decoration:none;' onclick=atualizaCadastro('$placa')><b>(atualizar)</b></a>
+															<br><button onclick=atualizaCadastro('$placa')>Atualizar</button>
 														</td>
 													</tr>";
 											}else{
@@ -202,9 +264,9 @@
 														<td style='border: 1px solid black;'>$cor</td>
 														<td style='border: 1px solid black;'>".date_format(date_create($data_cadastro), 'd-m-Y H:i')."</td>
 														<td style='border: 1px solid black;'>".date_format(date_create($data_vigencia), 'd-m-Y H:i')."</td>
-														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <a href='#' style='text-decoration:none;' onclick=carregaDivExclusao('$placa','NAO')><b>(alterar)</b></a></td>
+														<td style='border: 1px solid black;' id='idcelula$placa'>$ativo <button onclick=carregaDivExclusao('$placa','$ativo')>Alterar</button></td>
 														<td style='border: 1px solid black;' id='idatualizacelula$placa'>
-															<a href='#' style='text-decoration:none;' onclick=atualizaCadastro('$placa')><b>(atualizar)</b></a>
+															<br><button onclick=atualizaCadastro('$placa')>Atualizar</button>
 														</td>
 													</tr>";
 											}

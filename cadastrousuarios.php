@@ -126,12 +126,12 @@
 				<ul>
 					<li><a href="index.php">Cadastro de Placas</a></li>
 					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
-					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
+					<li><a href="cadastrousuarios.php" style="background:#868686;">Cadastro Usuários</a></li>
 				</ul>
 			</div>
 			<div id="conteudo">
-				<!--<b><u><p align="center">Cadastro de usuários</p></u></b><br><br>-->
-				<h1 align="center"><u>Cadastro de usuários</u></h1><br>
+				<!--<h1 align="center"><u>Cadastro de usuários</u></h1><br>-->
+				<br>
 				<form name="contato" onsubmit="return TestaCampos();" action="envia_email.php" method="post">
 					<table cellSpacing="0" cellPadding="0" border="0" align="center">
 						<tr>

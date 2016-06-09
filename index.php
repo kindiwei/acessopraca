@@ -12,6 +12,12 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		
 		<script>
+			// function TestaLogin(){
+				// login1 = getElementById("login1").value.trim();
+				// alert(login1);
+				// return true;
+			// }
+				
 			function isValidatePlate(text){
 				text = text.trim();
 				text = text.replace(" ", "");
@@ -157,7 +163,7 @@
 				<div id="login">
 					<form method="post" action="login.php">
 						<table>
-							<tr><td>Login:</td><td><input type="text" name="login" size=15></td></tr>
+							<tr><td>Login:</td><td><input type="text" id="login1" name="login" size=15></td></tr>
 							<tr><td>Senha:</td><td><input type="password" name="senha" size=15></td></tr>
 							<tr><td colspan="2" align="center"><input type="submit" value="Entrar" name="Submit"></td></tr>
 							<tr>
@@ -184,13 +190,14 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="index.php">Cadastro de Placas</a></li>
+					<li><a href="index.php" style="background:#868686;">Cadastro de Placas</a></li>
 					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
 			</div>
 			<div id="conteudo">
-				<h1 align="center"><u>Cadastro de Placas</u></h1><br>
+				<!--<h1 align="center"><u>Cadastro de Placas</u></h1><br>-->
+				<br>
 				<form name="cadastroplaca" onsubmit="return TestaCampos();" action="envia_placa_banco.php" method="post">
 					<table cellSpacing="0" cellPadding="0" align="center">
 						<tr>

@@ -44,7 +44,8 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="index.php">Cadastro de Placas</a></li>
+					<li><a href="index.php" style="background:#868686;">Manual de Uso</a></li>
+					<li><a href="cadastroplacas.php">Cadastro de Placas</a></li>
 					<li><a href="placascadastradas.php">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>

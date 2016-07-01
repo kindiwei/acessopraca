@@ -143,7 +143,8 @@
 			</div>
 			<div id="menu">
 				<ul>
-					<li><a href="index.php">Cadastro de Placas</a></li>
+					<li><a href="index.php">Manual de Uso</a></li>
+					<li><a href="cadastroplacas.php">Cadastro de Placas</a></li>
 					<li><a href="placascadastradas.php" style="background:#868686;">Placas Cadastradas</a></li>
 					<li><a href="cadastrousuarios.php">Cadastro Usuários</a></li>
 				</ul>
